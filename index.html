@@ -3,862 +3,1407 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>Agenticai Studio — Build. Ship. Think Agentic.</title>
-<meta name="description" content="Deep tutorials, system breakdowns, and real builds on Agentic AI — by practitioners, for practitioners."/>
-<meta property="og:title" content="Agenticai Studio"/>
-<meta property="og:description" content="The studio for building production Agentic AI. Tutorials, breakdowns, and builds."/>
+<title>Agenticai Studio</title>
+<meta name="description" content="The definitive resource for building production Agentic AI. Deep tutorials, system breakdowns, and real builds."/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,700;1,9..144,300;1,9..144,400&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-
+<link href="https://fonts.googleapis.com/css2?family=SF+Pro+Display:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+<!-- Using system SF Pro + fallbacks like Apple does -->
 <style>
+
+/* ══════════════════════════════════════════
+   APPLE DNA — TOKENS
+══════════════════════════════════════════ */
 :root {
-  --ink:     #0A0A0B;
-  --ink2:    #111113;
-  --ink3:    #18181C;
-  --surface: #1E1E24;
-  --lift:    #242430;
-  --wire:    rgba(255,255,255,0.06);
-  --wire2:   rgba(255,255,255,0.10);
-  --wire3:   rgba(255,255,255,0.16);
-  --dim:     #3A3A48;
-  --muted:   #6B6B82;
-  --body:    #A8A8C0;
-  --text:    #E4E4F0;
-  --bright:  #F0F0FF;
-  --cyan:    #22D4F5;
-  --cyan-d:  #0B8AAD;
-  --cyan-bg: rgba(34,212,245,0.07);
-  --amber:   #FFBC42;
-  --amber-bg:rgba(255,188,66,0.07);
-  --violet:  #A78BFA;
-  --violet-bg:rgba(167,139,250,0.07);
-  --green:   #34EEA0;
-  --green-bg:rgba(52,238,160,0.06);
-  --red:     #FF6B6B;
-  --r:       10px;
-  --r2:      16px;
-  --r3:      24px;
-  --f-head:  'Geist', sans-serif;
-  --f-serif: 'Fraunces', serif;
-  --f-mono:  'IBM Plex Mono', monospace;
+  --white:      #ffffff;
+  --off-white:  #fbfbfd;
+  --gray-100:   #f5f5f7;
+  --gray-200:   #e8e8ed;
+  --gray-300:   #d2d2d7;
+  --gray-400:   #aeaeb2;
+  --gray-500:   #8e8e93;
+  --gray-600:   #636366;
+  --gray-700:   #3a3a3c;
+  --gray-800:   #1d1d1f;
+  --black:      #000000;
+
+  --blue:       #0071e3;
+  --blue-hover: #0077ed;
+  --blue-light: #e8f0fe;
+
+  --font: -apple-system, "SF Pro Display", "SF Pro Text", "Helvetica Neue", Arial, sans-serif;
+  --font-mono: "SF Mono", "Fira Code", monospace;
+
+  --nav-h: 52px;
+  --max: 980px;
+  --max-wide: 1200px;
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --ease-out: cubic-bezier(0, 0, 0.2, 1);
 }
 
-*,*::before,*::after{margin:0;padding:0;box-sizing:border-box}
-html{font-size:16px;scroll-behavior:smooth}
-body{background:var(--ink);color:var(--text);font-family:var(--f-head);overflow-x:hidden;line-height:1.6}
-::selection{background:var(--cyan);color:var(--ink)}
-::-webkit-scrollbar{width:3px}
-::-webkit-scrollbar-track{background:var(--ink)}
-::-webkit-scrollbar-thumb{background:var(--cyan-d);border-radius:2px}
-img{max-width:100%;display:block}
-a{color:inherit;text-decoration:none}
+/* ══════════════════════════════════════════
+   RESET
+══════════════════════════════════════════ */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+html { font-size:17px; scroll-behavior:smooth; }
+body {
+  background: var(--white);
+  color: var(--gray-800);
+  font-family: var(--font);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: hidden;
+}
+::selection { background: rgba(0,113,227,0.15); }
+::-webkit-scrollbar { width:0; }
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
 
-body::after{
-  content:'';position:fixed;inset:0;pointer-events:none;z-index:9999;
-  background:repeating-linear-gradient(0deg,transparent,transparent 2px,rgba(0,0,0,0.025) 2px,rgba(0,0,0,0.025) 4px);
+/* ══════════════════════════════════════════
+   NAV — exactly Apple's nav
+══════════════════════════════════════════ */
+.nav {
+  position: fixed; top:0; left:0; right:0; z-index:9000;
+  height: var(--nav-h);
+  background: rgba(255,255,255,0.85);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+  border-bottom: 1px solid rgba(0,0,0,0.1);
+  display: flex; align-items: center; justify-content: center;
+}
+.nav-inner {
+  width: 100%; max-width: var(--max-wide);
+  padding: 0 22px;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 8px;
+}
+.nav-logo {
+  font-size: 21px; font-weight: 400; color: var(--gray-800);
+  letter-spacing: -0.01em; white-space: nowrap;
+}
+.nav-logo span { color: var(--blue); }
+.nav-links {
+  display: flex; align-items: center; gap: 0;
+  list-style: none;
+}
+.nav-links a {
+  display: block; padding: 0 12px;
+  font-size: 12px; font-weight: 400; color: var(--gray-700);
+  letter-spacing: 0; transition: color 0.15s;
+  white-space: nowrap;
+}
+.nav-links a:hover { color: var(--black); }
+.nav-cta {
+  font-size: 12px; font-weight: 400; color: var(--blue);
+  white-space: nowrap; transition: color 0.15s;
+}
+.nav-cta:hover { color: var(--blue-hover); text-decoration: underline; }
+.nav-hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; padding:4px; }
+.nav-hamburger span { display:block; width:18px; height:1.5px; background:var(--gray-700); border-radius:1px; }
+
+/* ══════════════════════════════════════════
+   HERO — Cinematic Apple-style full-bleed
+══════════════════════════════════════════ */
+.hero {
+  min-height: 100svh;
+  background: var(--black);
+  display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  text-align: center;
+  padding: calc(var(--nav-h) + 80px) 24px 80px;
+  position: relative; overflow: hidden;
 }
 
-/* NAV */
-nav{
-  position:fixed;top:0;left:0;right:0;z-index:500;
-  display:flex;align-items:center;justify-content:space-between;
-  padding:0 40px;height:60px;
-  background:rgba(10,10,11,0.88);
-  backdrop-filter:blur(24px) saturate(160%);
-  border-bottom:1px solid var(--wire);
-}
-.nav-logo{
-  display:flex;align-items:center;gap:10px;
-  font-family:var(--f-mono);font-size:14px;font-weight:500;
-  letter-spacing:-0.01em;color:var(--bright);
-}
-.logo-mark{
-  width:28px;height:28px;border-radius:7px;
-  background:var(--cyan);display:flex;align-items:center;justify-content:center;
-}
-.logo-mark svg{width:15px;height:15px}
-.logo-slash{color:var(--muted);margin:0 1px}
-.nav-center{display:flex;align-items:center;gap:2px}
-.nav-pill{
-  padding:5px 14px;border-radius:100px;
-  font-size:13px;font-weight:500;color:var(--muted);
-  transition:all 0.2s;cursor:pointer;background:transparent;border:none;
-  font-family:var(--f-head);
-}
-.nav-pill:hover,.nav-pill.active{background:var(--surface);color:var(--text)}
-.nav-pill.active{color:var(--cyan)}
-.nav-right{display:flex;align-items:center;gap:12px}
-.nav-subscribe{
-  padding:7px 16px;border-radius:8px;
-  background:var(--cyan);color:var(--ink);
-  font-size:13px;font-weight:600;transition:all 0.2s;
-}
-.nav-subscribe:hover{background:var(--bright);transform:translateY(-1px)}
-
-/* HERO */
-.hero{
-  padding:116px 40px 60px;
-  border-bottom:1px solid var(--wire);
-  position:relative;overflow:hidden;
-}
-.hero-bg{
-  position:absolute;inset:0;pointer-events:none;
+/* Cinematic gradient backdrop */
+.hero::before {
+  content: '';
+  position: absolute; inset: 0;
   background:
-    radial-gradient(ellipse 55% 55% at 72% 28%, rgba(34,212,245,0.055) 0%, transparent 65%),
-    radial-gradient(ellipse 40% 40% at 18% 82%, rgba(167,139,250,0.04) 0%, transparent 65%);
-}
-.hero-bg::after{
-  content:'';position:absolute;inset:0;
-  background-image:radial-gradient(circle, rgba(255,255,255,0.07) 1px, transparent 1px);
-  background-size:32px 32px;
-  mask-image:radial-gradient(ellipse 85% 75% at 50% 50%, black 20%, transparent 100%);
-}
-.hero-inner{max-width:820px;position:relative;z-index:1}
-.hero-eyebrow{
-  display:inline-flex;align-items:center;gap:10px;
-  font-family:var(--f-mono);font-size:11px;color:var(--cyan);
-  letter-spacing:0.1em;text-transform:uppercase;margin-bottom:22px;
-}
-.hero-eyebrow::before{content:'';display:block;width:22px;height:1px;background:var(--cyan)}
-.hero-title{
-  font-family:var(--f-serif);
-  font-size:clamp(40px,5.5vw,76px);
-  font-weight:300;line-height:1.05;
-  letter-spacing:-0.02em;color:var(--bright);
-  margin-bottom:18px;
-}
-.hero-title em{font-style:italic;color:var(--cyan)}
-.hero-title strong{
-  font-style:normal;font-weight:700;
-  font-family:var(--f-head);font-size:0.68em;letter-spacing:-0.03em;
-}
-.hero-desc{
-  font-size:17px;color:var(--body);line-height:1.78;
-  max-width:520px;margin-bottom:32px;font-weight:300;
-}
-.hero-desc b{color:var(--text);font-weight:500}
-.hero-tags{display:flex;flex-wrap:wrap;gap:7px}
-.hero-tag{
-  padding:5px 11px;border-radius:6px;
-  font-family:var(--f-mono);font-size:11px;
-  border:1px solid var(--wire2);color:var(--muted);
-  transition:all 0.2s;cursor:default;
-}
-.hero-tag:hover{border-color:var(--cyan);color:var(--cyan);background:var(--cyan-bg)}
-
-/* LAYOUT */
-.layout{
-  display:grid;grid-template-columns:1fr 308px;
-  gap:0;max-width:1240px;margin:0 auto;padding:0 40px;
-  align-items:start;
+    radial-gradient(ellipse 80% 60% at 50% 0%,   rgba(0,90,200,0.35) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 20% 80%,  rgba(0,180,255,0.12) 0%, transparent 55%),
+    radial-gradient(ellipse 50% 40% at 80% 70%,  rgba(60,0,200,0.10) 0%, transparent 55%);
+  pointer-events: none;
 }
 
-/* FEED */
-.feed{
-  padding:44px 52px 80px 0;
-  border-right:1px solid var(--wire);
-  min-height:100vh;
+/* Subtle grid lines */
+.hero::after {
+  content: '';
+  position: absolute; inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+  background-size: 80px 80px;
+  mask-image: radial-gradient(ellipse 100% 100% at 50% 50%, black 30%, transparent 100%);
+  pointer-events: none;
 }
 
-/* FILTER BAR */
-.filter-bar{
-  display:flex;align-items:center;border:1px solid var(--wire2);
-  border-radius:var(--r);overflow:hidden;margin-bottom:44px;
-}
-.filter-btn{
-  flex:1;padding:10px 4px;background:transparent;border:none;
-  font-family:var(--f-head);font-size:12px;font-weight:500;
-  color:var(--muted);cursor:pointer;transition:all 0.2s;
-  border-right:1px solid var(--wire);letter-spacing:0.02em;
-}
-.filter-btn:last-child{border-right:none}
-.filter-btn:hover{background:var(--ink3);color:var(--text)}
-.filter-btn.on{background:var(--surface);color:var(--cyan)}
-
-/* FEATURED */
-.post-featured{
-  padding:26px;border-radius:var(--r2);
-  border:1px solid var(--wire2);
-  background:linear-gradient(135deg,var(--ink3) 0%,var(--surface) 100%);
-  margin-bottom:44px;cursor:pointer;
-  position:relative;overflow:hidden;transition:all 0.3s;
-}
-.post-featured::after{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,var(--cyan-bg),transparent 60%);
-  opacity:0;transition:opacity 0.3s;
-}
-.post-featured:hover{border-color:rgba(34,212,245,0.28);transform:translateY(-2px)}
-.post-featured:hover::after{opacity:1}
-.featured-badge{
-  display:inline-flex;align-items:center;gap:6px;
-  font-family:var(--f-mono);font-size:10px;color:var(--amber);
-  letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;
-}
-.featured-badge::before{content:'★';font-size:10px}
-.featured-title{
-  font-family:var(--f-serif);
-  font-size:clamp(20px,2.6vw,30px);
-  font-weight:400;line-height:1.18;
-  color:var(--bright);letter-spacing:-0.015em;margin-bottom:10px;
-}
-.featured-title em{font-style:italic;color:var(--cyan)}
-.featured-deck{
-  font-size:14px;color:var(--body);line-height:1.72;
-  font-weight:300;margin-bottom:18px;max-width:520px;
-}
-.featured-foot{
-  display:flex;align-items:center;justify-content:space-between;
-  flex-wrap:wrap;gap:12px;position:relative;z-index:1;
-}
-.featured-meta{display:flex;align-items:center;gap:14px}
-.featured-author{display:flex;align-items:center;gap:8px}
-.author-av{
-  width:26px;height:26px;border-radius:50%;
-  background:linear-gradient(135deg,var(--cyan),var(--violet));
-  display:flex;align-items:center;justify-content:center;
-  font-size:10px;font-weight:700;color:var(--ink);font-family:var(--f-mono);
-}
-.author-name{font-size:12px;color:var(--body)}
-.featured-stats{display:flex;gap:14px}
-.fstat{font-family:var(--f-mono);font-size:11px;color:var(--muted);display:flex;align-items:center;gap:4px}
-.read-btn{
-  display:inline-flex;align-items:center;gap:6px;
-  padding:8px 18px;border-radius:8px;background:var(--cyan);color:var(--ink);
-  font-size:13px;font-weight:600;transition:all 0.2s;
-}
-.read-btn:hover{background:var(--bright)}
-
-/* SERIES STRIP */
-.series-strip{
-  padding:20px 22px;border-radius:var(--r2);
-  border:1px solid var(--wire);background:var(--ink3);
-  margin-bottom:44px;
-}
-.series-label{
-  font-family:var(--f-mono);font-size:10px;color:var(--muted);
-  letter-spacing:0.08em;text-transform:uppercase;margin-bottom:14px;
-}
-.series-item{
-  display:flex;align-items:center;gap:14px;
-  padding:10px 0;border-bottom:1px solid var(--wire);
-  cursor:pointer;transition:all 0.15s;
-}
-.series-item:last-child{border-bottom:none;padding-bottom:0}
-.series-item:first-child{padding-top:0}
-.series-item:hover .series-item-title{color:var(--cyan)}
-.series-num{font-family:var(--f-mono);font-size:11px;color:var(--muted);width:18px;text-align:right;flex-shrink:0}
-.series-item-title{font-size:13px;color:var(--body);flex:1;line-height:1.4;transition:color 0.15s}
-.series-check{
-  width:17px;height:17px;border-radius:50%;border:1px solid var(--wire3);
-  display:flex;align-items:center;justify-content:center;flex-shrink:0;
-}
-.series-check.done{background:var(--green);border-color:var(--green)}
-.series-check.done::after{content:'✓';font-size:9px;color:var(--ink);font-weight:700}
-
-/* POST CARDS */
-.post-card{
-  padding:30px 0;border-bottom:1px solid var(--wire);
-  display:flex;flex-direction:column;gap:11px;
-  transition:all 0.2s;cursor:pointer;position:relative;
-}
-.post-card:first-of-type{padding-top:0}
-.post-card::before{
-  content:'';position:absolute;left:-18px;top:0;bottom:0;width:2px;
-  background:var(--cyan);transform:scaleY(0);transition:transform 0.3s;transform-origin:top;
-}
-.post-card:hover::before{transform:scaleY(1)}
-.post-card-top{display:flex;align-items:center;justify-content:space-between;gap:16px}
-.post-meta-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap}
-.post-type{
-  padding:3px 9px;border-radius:5px;
-  font-family:var(--f-mono);font-size:10px;font-weight:600;
-  letter-spacing:0.06em;text-transform:uppercase;
-}
-.type-tutorial{background:var(--cyan-bg);color:var(--cyan);border:1px solid rgba(34,212,245,0.2)}
-.type-breakdown{background:var(--violet-bg);color:var(--violet);border:1px solid rgba(167,139,250,0.2)}
-.type-build{background:var(--green-bg);color:var(--green);border:1px solid rgba(52,238,160,0.2)}
-.type-opinion{background:var(--amber-bg);color:var(--amber);border:1px solid rgba(255,188,66,0.2)}
-.post-date{font-family:var(--f-mono);font-size:11px;color:var(--muted)}
-.post-read{font-family:var(--f-mono);font-size:11px;color:var(--dim)}
-.post-title{
-  font-family:var(--f-serif);
-  font-size:clamp(19px,2.3vw,24px);
-  font-weight:400;line-height:1.22;
-  color:var(--bright);letter-spacing:-0.01em;transition:color 0.2s;
-}
-.post-card:hover .post-title{color:var(--cyan)}
-.post-title em{font-style:italic;font-weight:300}
-.post-deck{font-size:13.5px;color:var(--body);line-height:1.72;font-weight:300}
-.post-foot{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:2px}
-.post-tags{display:flex;gap:5px;flex-wrap:wrap}
-.post-tag{
-  padding:3px 9px;border-radius:5px;
-  font-family:var(--f-mono);font-size:10px;
-  background:var(--surface);color:var(--muted);
-  border:1px solid var(--wire);transition:all 0.15s;
-}
-.post-tag:hover{border-color:var(--wire3);color:var(--body)}
-.post-arrow{color:var(--muted);font-size:16px;transition:all 0.2s;flex-shrink:0}
-.post-card:hover .post-arrow{color:var(--cyan);transform:translateX(4px)}
-
-/* LOAD MORE */
-.load-more{display:flex;justify-content:center;padding:44px 0 0}
-.load-btn{
-  padding:10px 26px;border-radius:8px;
-  border:1px solid var(--wire3);
-  font-family:var(--f-head);font-size:13px;font-weight:500;
-  color:var(--body);background:transparent;cursor:pointer;transition:all 0.2s;
-}
-.load-btn:hover{background:var(--surface);color:var(--text)}
-
-/* SIDEBAR */
-.sidebar{
-  padding:44px 0 80px 36px;
-  display:flex;flex-direction:column;gap:36px;
-  position:sticky;top:60px;
-}
-.sidebar-label{
-  font-family:var(--f-mono);font-size:10px;color:var(--muted);
-  letter-spacing:0.1em;text-transform:uppercase;margin-bottom:14px;
+.hero-content {
+  position: relative; z-index:1;
+  max-width: 720px;
+  animation: heroFadeIn 1.2s var(--ease-out) both;
 }
 
-/* Newsletter */
-.newsletter-box{
-  padding:22px;border-radius:var(--r2);
-  background:var(--ink3);border:1px solid var(--wire2);
-}
-.nl-title{font-size:15px;font-weight:600;color:var(--bright);margin-bottom:7px}
-.nl-desc{font-size:13px;color:var(--body);line-height:1.6;margin-bottom:16px;font-weight:300}
-.nl-input{
-  width:100%;padding:9px 13px;
-  background:var(--ink);border:1px solid var(--wire3);
-  border-radius:8px;color:var(--text);
-  font-family:var(--f-head);font-size:13px;
-  outline:none;margin-bottom:9px;transition:border-color 0.2s;
-}
-.nl-input:focus{border-color:var(--cyan)}
-.nl-input::placeholder{color:var(--dim)}
-.nl-btn{
-  width:100%;padding:9px;border-radius:8px;
-  background:var(--cyan);color:var(--ink);
-  border:none;font-family:var(--f-head);
-  font-size:13px;font-weight:600;cursor:pointer;transition:all 0.2s;
-}
-.nl-btn:hover{background:var(--bright)}
-.nl-note{font-family:var(--f-mono);font-size:10px;color:var(--dim);margin-top:7px;text-align:center}
-
-/* Author */
-.author-card{
-  padding:18px;border-radius:var(--r2);
-  background:var(--ink3);border:1px solid var(--wire);
-  display:flex;align-items:flex-start;gap:12px;
-}
-.author-av-lg{
-  width:42px;height:42px;border-radius:11px;flex-shrink:0;
-  background:linear-gradient(135deg,var(--cyan) 0%,var(--violet) 100%);
-  display:flex;align-items:center;justify-content:center;
-  font-family:var(--f-mono);font-size:15px;font-weight:700;color:var(--ink);
-}
-.author-card-name{font-size:14px;font-weight:600;color:var(--bright);margin-bottom:2px}
-.author-card-role{font-size:11px;color:var(--muted);font-family:var(--f-mono);margin-bottom:7px}
-.author-card-bio{font-size:12px;color:var(--body);line-height:1.6;font-weight:300}
-.author-socials{display:flex;gap:7px;margin-top:10px}
-.author-social{
-  padding:3px 9px;border-radius:6px;
-  font-family:var(--f-mono);font-size:10px;
-  border:1px solid var(--wire2);color:var(--muted);transition:all 0.2s;
-}
-.author-social:hover{border-color:var(--cyan);color:var(--cyan)}
-
-/* Topics */
-.topic-grid{display:flex;flex-wrap:wrap;gap:6px}
-.topic-chip{
-  padding:5px 11px;border-radius:6px;
-  font-family:var(--f-mono);font-size:11px;
-  background:var(--surface);color:var(--body);
-  border:1px solid var(--wire);cursor:pointer;transition:all 0.2s;
-}
-.topic-chip:hover{background:var(--lift);border-color:var(--wire3);color:var(--text)}
-.topic-chip.hot{border-color:rgba(34,212,245,0.25);color:var(--cyan);background:var(--cyan-bg)}
-
-/* Trending */
-.trending-item{
-  display:flex;align-items:flex-start;gap:11px;
-  padding:11px 0;border-bottom:1px solid var(--wire);cursor:pointer;
-}
-.trending-item:last-child{border-bottom:none}
-.trend-num{
-  font-family:var(--f-mono);font-size:20px;font-weight:600;
-  color:var(--wire2);line-height:1;flex-shrink:0;width:26px;
-}
-.trend-title{font-size:13px;color:var(--body);line-height:1.4;margin-bottom:3px;transition:color 0.15s}
-.trending-item:hover .trend-title{color:var(--cyan)}
-.trend-meta{font-family:var(--f-mono);font-size:10px;color:var(--dim)}
-
-/* Footer */
-footer{
-  border-top:1px solid var(--wire);padding:36px 40px;
-  display:grid;grid-template-columns:1.2fr 1fr 1fr;gap:32px;
-  max-width:1240px;margin:0 auto;
-}
-.footer-brand-name{font-family:var(--f-mono);font-size:13px;color:var(--text);font-weight:500;display:block;margin-bottom:7px}
-.footer-brand-desc{font-size:12px;color:var(--muted);line-height:1.6;font-weight:300}
-.footer-col h4{font-family:var(--f-mono);font-size:10px;color:var(--dim);letter-spacing:0.08em;text-transform:uppercase;margin-bottom:11px}
-.footer-col a{display:block;font-size:13px;color:var(--muted);padding:3px 0;transition:color 0.15s}
-.footer-col a:hover{color:var(--cyan)}
-.footer-bottom{
-  grid-column:1/-1;border-top:1px solid var(--wire);padding-top:22px;
-  display:flex;align-items:center;justify-content:space-between;
-  font-family:var(--f-mono);font-size:11px;color:var(--dim);
+@keyframes heroFadeIn {
+  from { opacity: 0; transform: translateY(30px); }
+  to   { opacity: 1; transform: translateY(0); }
 }
 
-/* Animations */
-.fade-in{opacity:0;transform:translateY(14px);transition:opacity 0.5s ease,transform 0.5s ease}
-.fade-in.up{opacity:1;transform:translateY(0)}
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 14px; font-weight: 500;
+  color: rgba(255,255,255,0.5);
+  letter-spacing: 0.04em;
+  margin-bottom: 20px;
+  animation: heroFadeIn 1s 0.1s var(--ease-out) both;
+}
 
-/* Mobile */
-@media(max-width:900px){
-  nav{padding:0 20px}
-  .nav-center{display:none}
-  .hero{padding:88px 20px 44px}
-  .layout{grid-template-columns:1fr;padding:0 20px}
-  .feed{padding:28px 0 56px;border-right:none}
-  .sidebar{display:none}
-  footer{grid-template-columns:1fr;padding:28px 20px}
-  .footer-bottom{flex-direction:column;gap:6px;text-align:center}
+.hero-h1 {
+  font-size: clamp(48px, 7vw, 96px);
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.03em;
+  color: #fff;
+  margin-bottom: 24px;
+  animation: heroFadeIn 1s 0.2s var(--ease-out) both;
+}
+.hero-h1 .grad {
+  background: linear-gradient(135deg, #fff 0%, rgba(255,255,255,0.6) 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.hero-h1 .blue {
+  background: linear-gradient(135deg, #4FC3F7 0%, #0288D1 50%, #80DEEA 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-size: clamp(17px, 2.2vw, 22px);
+  font-weight: 300;
+  line-height: 1.55;
+  color: rgba(255,255,255,0.62);
+  max-width: 560px;
+  margin: 0 auto 36px;
+  animation: heroFadeIn 1s 0.3s var(--ease-out) both;
+}
+.hero-sub strong { color: rgba(255,255,255,0.85); font-weight: 500; }
+
+.hero-actions {
+  display: flex; align-items: center; justify-content: center; gap: 14px; flex-wrap: wrap;
+  animation: heroFadeIn 1s 0.4s var(--ease-out) both;
+}
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 14px 28px; border-radius: 980px;
+  background: var(--blue); color: #fff;
+  font-size: 17px; font-weight: 400;
+  transition: all 0.3s var(--ease);
+  letter-spacing: 0;
+}
+.btn-primary:hover { background: var(--blue-hover); transform: scale(1.02); }
+.btn-secondary {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 14px 28px; border-radius: 980px;
+  background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.9);
+  border: 1px solid rgba(255,255,255,0.15);
+  font-size: 17px; font-weight: 400;
+  transition: all 0.3s var(--ease);
+  backdrop-filter: blur(8px);
+}
+.btn-secondary:hover { background: rgba(255,255,255,0.16); border-color: rgba(255,255,255,0.25); }
+
+/* scroll cue */
+.hero-scroll {
+  position: absolute; bottom: 40px; left: 50%; transform: translateX(-50%);
+  display: flex; flex-direction: column; align-items: center; gap: 8px;
+  animation: heroFadeIn 1s 0.9s var(--ease-out) both;
+}
+.hero-scroll-line {
+  width: 1px; height: 56px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+.hero-scroll span {
+  font-size: 11px; font-weight: 400; color: rgba(255,255,255,0.35);
+  letter-spacing: 0.08em; text-transform: uppercase;
+}
+@keyframes scrollPulse {
+  0%,100% { opacity:0.5; }
+  50% { opacity:1; }
+}
+
+/* ══════════════════════════════════════════
+   SECTION UTILITY
+══════════════════════════════════════════ */
+.section { padding: 120px 24px; }
+.section-sm { padding: 80px 24px; }
+.container { max-width: var(--max); margin: 0 auto; }
+.container-wide { max-width: var(--max-wide); margin: 0 auto; }
+
+.section-label {
+  font-size: 12px; font-weight: 600; color: var(--blue);
+  letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 14px;
+}
+.section-h2 {
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 600; line-height: 1.06;
+  letter-spacing: -0.025em; color: var(--gray-800);
+  margin-bottom: 16px;
+}
+.section-h2 em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--blue) 0%, #5AC8FA 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.section-lead {
+  font-size: clamp(17px, 2vw, 22px); font-weight: 300;
+  line-height: 1.55; color: var(--gray-600);
+  max-width: 580px;
+}
+.centered { text-align: center; }
+.centered .section-lead { margin: 0 auto; }
+
+/* fade-up animation */
+.reveal {
+  opacity: 0; transform: translateY(28px);
+  transition: opacity 0.7s var(--ease-out), transform 0.7s var(--ease-out);
+}
+.reveal.visible { opacity: 1; transform: translateY(0); }
+
+/* ══════════════════════════════════════════
+   WHAT IS AGENTIC AI — dark cinematic band
+══════════════════════════════════════════ */
+.what-band {
+  background: var(--off-white);
+  padding: 0 24px;
+}
+.what-inner {
+  max-width: var(--max-wide);
+  margin: 0 auto;
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0;
+  min-height: 600px;
+}
+.what-left {
+  padding: 100px 80px 100px 0;
+  border-right: 1px solid var(--gray-200);
+  display: flex; flex-direction: column; justify-content: center;
+}
+.what-right {
+  padding: 100px 0 100px 80px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.what-headline {
+  font-size: clamp(38px, 4.5vw, 60px);
+  font-weight: 600; line-height: 1.06;
+  letter-spacing: -0.025em; color: var(--gray-800);
+  margin-bottom: 24px;
+}
+.what-headline em {
+  font-style: normal;
+  background: linear-gradient(135deg, var(--blue) 0%, #5AC8FA 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.what-body {
+  font-size: 17px; font-weight: 300; line-height: 1.7;
+  color: var(--gray-600); margin-bottom: 20px;
+}
+.what-body strong { color: var(--gray-800); font-weight: 500; }
+.what-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 17px; color: var(--blue); font-weight: 400;
+  transition: gap 0.2s;
+}
+.what-link:hover { gap: 8px; }
+
+.what-pillars {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 1px; background: var(--gray-200);
+  border: 1px solid var(--gray-200);
+  border-radius: 18px; overflow: hidden;
+}
+.pillar {
+  background: var(--white);
+  padding: 32px 28px;
+  transition: background 0.2s;
+}
+.pillar:hover { background: var(--gray-100); }
+.pillar-num {
+  font-size: 11px; font-weight: 600; color: var(--blue);
+  letter-spacing: 0.06em; text-transform: uppercase; margin-bottom: 14px;
+  font-family: var(--font-mono);
+}
+.pillar-title {
+  font-size: 18px; font-weight: 600; color: var(--gray-800);
+  letter-spacing: -0.01em; margin-bottom: 8px; line-height: 1.2;
+}
+.pillar-desc {
+  font-size: 14px; font-weight: 300; line-height: 1.65;
+  color: var(--gray-600);
+}
+
+/* ══════════════════════════════════════════
+   BEST WAYS — numbered showcase
+══════════════════════════════════════════ */
+.ways-section {
+  background: var(--black);
+  padding: 120px 24px;
+}
+.ways-header {
+  text-align: center; margin-bottom: 80px;
+}
+.ways-header .section-label { color: #5AC8FA; }
+.ways-header .section-h2 { color: #fff; }
+.ways-header .section-h2 em {
+  background: linear-gradient(135deg, #5AC8FA 0%, #fff 100%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.ways-header .section-lead { color: rgba(255,255,255,0.5); margin: 0 auto; }
+
+.ways-grid {
+  max-width: var(--max-wide); margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 1px; background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px; overflow: hidden;
+}
+.way-card {
+  background: #0a0a0a;
+  padding: 44px 36px;
+  transition: background 0.3s;
+  position: relative;
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+.way-card:hover { background: #111; }
+.way-card:nth-child(n+4) { border-bottom: none; }
+.way-num {
+  font-family: var(--font-mono);
+  font-size: 11px; font-weight: 500;
+  color: rgba(255,255,255,0.2);
+  letter-spacing: 0.1em; margin-bottom: 20px;
+}
+.way-icon {
+  font-size: 28px; margin-bottom: 20px; display: block;
+}
+.way-title {
+  font-size: 20px; font-weight: 600; color: #fff;
+  letter-spacing: -0.015em; line-height: 1.2; margin-bottom: 12px;
+}
+.way-desc {
+  font-size: 14px; font-weight: 300; line-height: 1.72;
+  color: rgba(255,255,255,0.45);
+}
+.way-tags { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 20px; }
+.way-tag {
+  padding: 4px 10px; border-radius: 100px;
+  font-size: 11px; font-family: var(--font-mono);
+  border: 1px solid rgba(255,255,255,0.1); color: rgba(255,255,255,0.35);
+  transition: all 0.2s;
+}
+.way-card:hover .way-tag { border-color: rgba(90,200,250,0.3); color: #5AC8FA; }
+
+/* ══════════════════════════════════════════
+   CONTENT FEED — Apple editorial grid
+══════════════════════════════════════════ */
+.feed-section {
+  background: var(--off-white);
+  padding: 120px 24px;
+}
+.feed-header {
+  max-width: var(--max-wide); margin: 0 auto 64px;
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 24px;
+}
+.feed-header-left {}
+.feed-all {
+  font-size: 17px; color: var(--blue); font-weight: 400;
+  display: flex; align-items: center; gap: 4px;
+  transition: gap 0.2s; white-space: nowrap;
+  padding-bottom: 4px;
+}
+.feed-all:hover { gap: 8px; }
+
+/* filter pills */
+.feed-pills {
+  max-width: var(--max-wide); margin: 0 auto 48px;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.feed-pill {
+  padding: 8px 18px; border-radius: 100px;
+  font-size: 14px; font-weight: 400; color: var(--gray-600);
+  background: var(--white);
+  border: 1px solid var(--gray-300);
+  cursor: pointer; transition: all 0.2s;
+  font-family: var(--font);
+}
+.feed-pill:hover { border-color: var(--gray-500); color: var(--gray-800); }
+.feed-pill.active { background: var(--gray-800); color: var(--white); border-color: var(--gray-800); }
+
+/* featured card — full width */
+.card-featured {
+  max-width: var(--max-wide); margin: 0 auto 24px;
+  background: var(--black); border-radius: 20px;
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.4s var(--ease), box-shadow 0.4s var(--ease);
+  position: relative;
+  min-height: 420px;
+  display: flex; flex-direction: column; justify-content: flex-end;
+}
+.card-featured::before {
+  content: '';
+  position: absolute; inset: 0;
+  background:
+    radial-gradient(ellipse 70% 60% at 30% 30%, rgba(0,113,227,0.3) 0%, transparent 60%),
+    radial-gradient(ellipse 50% 50% at 80% 70%, rgba(90,200,250,0.15) 0%, transparent 55%);
+  pointer-events: none;
+}
+.card-featured:hover { transform: scale(1.005); box-shadow: 0 32px 80px rgba(0,0,0,0.3); }
+.card-featured-body {
+  position: relative; z-index:1;
+  padding: 48px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.4) 60%, transparent 100%);
+}
+.card-badge {
+  display: inline-flex; align-items: center; gap: 6px;
+  padding: 5px 12px; border-radius: 100px;
+  font-size: 11px; font-weight: 600; letter-spacing: 0.05em; text-transform: uppercase;
+  margin-bottom: 16px;
+  font-family: var(--font-mono);
+}
+.badge-featured { background: rgba(255,188,66,0.15); color: #FFBC42; border: 1px solid rgba(255,188,66,0.3); }
+.badge-tutorial { background: rgba(0,113,227,0.15); color: #5AC8FA; border: 1px solid rgba(90,200,250,0.3); }
+.badge-breakdown { background: rgba(167,139,250,0.15); color: #A78BFA; border: 1px solid rgba(167,139,250,0.3); }
+.badge-build { background: rgba(52,199,89,0.15); color: #34C759; border: 1px solid rgba(52,199,89,0.3); }
+.badge-opinion { background: rgba(255,149,0,0.15); color: #FF9500; border: 1px solid rgba(255,149,0,0.3); }
+
+.card-featured-title {
+  font-size: clamp(24px, 3.5vw, 40px); font-weight: 600;
+  color: #fff; letter-spacing: -0.02em; line-height: 1.1;
+  margin-bottom: 12px; max-width: 640px;
+}
+.card-featured-title em { font-style: italic; font-weight: 300; }
+.card-featured-desc { font-size: 17px; color: rgba(255,255,255,0.6); font-weight: 300; line-height: 1.55; max-width: 560px; margin-bottom: 24px; }
+.card-featured-meta {
+  display: flex; align-items: center; gap: 20px;
+}
+.card-author { display: flex; align-items: center; gap: 10px; }
+.card-av {
+  width: 30px; height: 30px; border-radius: 50%;
+  background: linear-gradient(135deg, var(--blue), #5AC8FA);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 12px; font-weight: 700; color: #fff;
+}
+.card-author-name { font-size: 14px; color: rgba(255,255,255,0.6); font-weight: 400; }
+.card-stat { font-size: 13px; color: rgba(255,255,255,0.35); font-family: var(--font-mono); }
+.card-read-btn {
+  margin-left: auto;
+  display: inline-flex; align-items: center; gap: 5px;
+  padding: 10px 20px; border-radius: 100px;
+  background: var(--white); color: var(--gray-800);
+  font-size: 14px; font-weight: 500;
+  transition: all 0.2s;
+}
+.card-read-btn:hover { background: var(--gray-100); transform: scale(1.03); }
+
+/* article grid */
+.article-grid {
+  max-width: var(--max-wide); margin: 0 auto;
+  display: grid; grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+}
+.article-card {
+  background: var(--white); border-radius: 16px;
+  overflow: hidden; cursor: pointer;
+  transition: transform 0.35s var(--ease), box-shadow 0.35s var(--ease);
+  display: flex; flex-direction: column;
+  border: 1px solid var(--gray-200);
+}
+.article-card:hover { transform: translateY(-6px); box-shadow: 0 24px 60px rgba(0,0,0,0.1); border-color: transparent; }
+.article-card-img {
+  height: 180px;
+  position: relative; overflow: hidden;
+}
+.article-card-img-bg {
+  position: absolute; inset: 0;
+  transition: transform 0.5s var(--ease);
+}
+.article-card:hover .article-card-img-bg { transform: scale(1.04); }
+.img-blue   { background: linear-gradient(135deg, #0a0f2e 0%, #0a3d7a 50%, #1a6fc4 100%); }
+.img-violet { background: linear-gradient(135deg, #1a0a2e 0%, #4a1a8a 50%, #7B5EA7 100%); }
+.img-teal   { background: linear-gradient(135deg, #001a1a 0%, #0a4a4a 50%, #1a8a7a 100%); }
+.img-amber  { background: linear-gradient(135deg, #1a0a00 0%, #6a3000 50%, #b36200 100%); }
+.img-gray   { background: linear-gradient(135deg, #0f0f0f 0%, #1a1a2a 50%, #2a2a3a 100%); }
+.img-green  { background: linear-gradient(135deg, #001a08 0%, #0a4a20 50%, #1a8a40 100%); }
+/* Decorative abstract shapes in card images */
+.article-card-img::after {
+  content:''; position:absolute; inset:0;
+  background: radial-gradient(circle at 30% 40%, rgba(255,255,255,0.07) 0%, transparent 50%),
+              radial-gradient(circle at 70% 70%, rgba(255,255,255,0.04) 0%, transparent 40%);
+}
+.article-card-body { padding: 22px 22px 18px; flex: 1; display: flex; flex-direction: column; }
+.article-tag-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+.article-date { font-size: 11px; font-family: var(--font-mono); color: var(--gray-500); }
+.article-title {
+  font-size: 17px; font-weight: 600; color: var(--gray-800);
+  letter-spacing: -0.01em; line-height: 1.25; margin-bottom: 8px;
+  transition: color 0.2s; flex: 1;
+}
+.article-card:hover .article-title { color: var(--blue); }
+.article-title em { font-style: italic; font-weight: 400; }
+.article-desc { font-size: 13px; color: var(--gray-500); line-height: 1.6; font-weight: 300; margin-bottom: 14px; }
+.article-foot {
+  display: flex; align-items: center; justify-content: space-between;
+  padding-top: 12px; border-top: 1px solid var(--gray-200);
+}
+.article-read-time { font-size: 11px; font-family: var(--font-mono); color: var(--gray-400); }
+.article-arrow { font-size: 16px; color: var(--gray-400); transition: all 0.2s; }
+.article-card:hover .article-arrow { color: var(--blue); transform: translateX(3px); }
+
+/* ══════════════════════════════════════════
+   SERIES — Apple's "Explore the series" style
+══════════════════════════════════════════ */
+.series-section {
+  background: var(--white);
+  padding: 100px 24px;
+  border-top: 1px solid var(--gray-200);
+}
+.series-inner { max-width: var(--max-wide); margin: 0 auto; }
+.series-header-row {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  margin-bottom: 48px; gap: 24px;
+}
+.series-track {
+  display: flex; gap: 16px; overflow-x: auto;
+  padding-bottom: 8px;
+  scrollbar-width: none;
+}
+.series-track::-webkit-scrollbar { display: none; }
+.series-card {
+  flex-shrink: 0; width: 280px;
+  background: var(--off-white); border-radius: 16px;
+  padding: 28px 24px; cursor: pointer;
+  border: 1px solid var(--gray-200);
+  transition: all 0.3s var(--ease);
+  position: relative; overflow: hidden;
+}
+.series-card::before {
+  content: ''; position: absolute; left:0; top:0; bottom:0; width:3px;
+  background: var(--blue); transform: scaleY(0); transform-origin: bottom;
+  transition: transform 0.3s var(--ease);
+}
+.series-card:hover { background: var(--white); box-shadow: 0 12px 40px rgba(0,0,0,0.08); transform: translateY(-3px); }
+.series-card:hover::before { transform: scaleY(1); }
+.series-ep {
+  font-size: 11px; font-family: var(--font-mono); font-weight: 600;
+  color: var(--blue); letter-spacing: 0.06em; text-transform: uppercase;
+  margin-bottom: 10px;
+}
+.series-title { font-size: 15px; font-weight: 600; color: var(--gray-800); line-height: 1.3; margin-bottom: 8px; letter-spacing: -0.01em; }
+.series-desc { font-size: 13px; font-weight: 300; color: var(--gray-500); line-height: 1.55; margin-bottom: 14px; }
+.series-meta { display: flex; align-items: center; justify-content: space-between; }
+.series-status {
+  display: flex; align-items: center; gap: 5px;
+  font-size: 11px; font-family: var(--font-mono); color: var(--gray-500);
+}
+.series-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+}
+.series-dot.done { background: #34C759; }
+.series-dot.pending { background: var(--gray-300); }
+.series-card-arrow { font-size: 14px; color: var(--gray-400); transition: all 0.2s; }
+.series-card:hover .series-card-arrow { color: var(--blue); transform: translateX(3px); }
+
+/* ══════════════════════════════════════════
+   CONCEPTS — Apple-style feature rows
+══════════════════════════════════════════ */
+.concepts-section {
+  background: var(--off-white);
+  padding: 100px 24px;
+  border-top: 1px solid var(--gray-200);
+}
+.concepts-inner { max-width: var(--max-wide); margin: 0 auto; }
+.concept-row {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 0; min-height: 400px;
+  border-radius: 20px; overflow: hidden;
+  margin-bottom: 16px;
+  border: 1px solid var(--gray-200);
+}
+.concept-row.flip { direction: rtl; }
+.concept-row.flip > * { direction: ltr; }
+.concept-visual {
+  display: flex; align-items: center; justify-content: center;
+  padding: 60px; position: relative; overflow: hidden;
+}
+.concept-visual.dark { background: var(--black); }
+.concept-visual.light { background: var(--gray-100); }
+.concept-visual.blue  { background: linear-gradient(135deg, #001428 0%, #003d80 100%); }
+.concept-visual.warm  { background: linear-gradient(135deg, #180800 0%, #5a2000 100%); }
+
+/* SVG / abstract visual for each concept */
+.concept-svg {
+  width: 100%; height: 220px; position: relative;
+}
+.concept-text-panel {
+  background: var(--white); padding: 60px;
+  display: flex; flex-direction: column; justify-content: center;
+}
+.concept-num {
+  font-size: 11px; font-family: var(--font-mono); font-weight: 600;
+  color: var(--blue); letter-spacing: 0.08em; text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.concept-title {
+  font-size: clamp(24px, 2.8vw, 34px); font-weight: 600;
+  letter-spacing: -0.02em; line-height: 1.1; color: var(--gray-800);
+  margin-bottom: 16px;
+}
+.concept-title em { font-style: italic; font-weight: 400; color: var(--blue); }
+.concept-body {
+  font-size: 16px; font-weight: 300; line-height: 1.7;
+  color: var(--gray-600); margin-bottom: 24px;
+}
+.concept-link {
+  display: inline-flex; align-items: center; gap: 4px;
+  font-size: 16px; color: var(--blue); font-weight: 400;
+  transition: gap 0.2s;
+}
+.concept-link:hover { gap: 8px; }
+
+/* Decorative visuals inside concept panels */
+.vis-react {
+  display: flex; align-items: center; justify-content: center;
+  gap: 0; position: relative; width: 100%; height: 200px;
+}
+.react-node {
+  width: 72px; height: 72px; border-radius: 16px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 22px; font-weight: 700; color: #fff;
+  position: relative; flex-shrink: 0;
+}
+.react-node.reason { background: rgba(0,113,227,0.9); }
+.react-node.act    { background: rgba(52,199,89,0.9); }
+.react-node.observe{ background: rgba(255,149,0,0.9); }
+.react-arrow {
+  width: 32px; height: 1.5px; background: rgba(255,255,255,0.25); position: relative;
+}
+.react-arrow::after {
+  content:'▶'; position:absolute; right:-4px; top:-6px;
+  font-size:10px; color:rgba(255,255,255,0.25);
+}
+.react-label {
+  position: absolute; bottom: -22px; left: 50%; transform: translateX(-50%);
+  font-size: 10px; font-family: var(--font-mono); color: rgba(255,255,255,0.4);
+  white-space: nowrap; letter-spacing: 0.06em; text-transform: uppercase;
+}
+
+.vis-graph {
+  position: relative; width: 100%; height: 200px;
+}
+.graph-node {
+  position: absolute; width: 56px; height: 56px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-family: var(--font-mono); font-weight: 600;
+  color: rgba(255,255,255,0.8); text-transform: uppercase; letter-spacing: 0.04em;
+  border: 1px solid rgba(255,255,255,0.1); background: rgba(255,255,255,0.06);
+}
+.graph-node.active { background: rgba(0,113,227,0.5); border-color: rgba(0,113,227,0.6); }
+.graph-line {
+  position: absolute; background: rgba(255,255,255,0.1); height: 1px; transform-origin: left center;
+}
+
+.vis-tools {
+  display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 280px;
+}
+.tool-row {
+  display: flex; align-items: center; gap: 10px;
+  padding: 10px 14px; border-radius: 10px;
+  background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+  transition: background 0.2s;
+}
+.tool-row:hover { background: rgba(255,255,255,0.08); }
+.tool-icon { font-size: 14px; width: 22px; text-align: center; }
+.tool-name { font-size: 12px; font-family: var(--font-mono); color: rgba(255,255,255,0.55); flex:1; }
+.tool-status {
+  width: 7px; height: 7px; border-radius: 50%; background: #34C759;
+  box-shadow: 0 0 6px rgba(52,199,89,0.5);
+}
+
+.vis-memory {
+  display: flex; flex-direction: column; gap: 6px; width: 100%; max-width: 260px;
+}
+.mem-bar {
+  display: flex; align-items: center; gap: 10px;
+}
+.mem-label { font-size: 10px; font-family: var(--font-mono); color: rgba(255,165,0,0.7); width: 80px; text-align: right; flex-shrink: 0; letter-spacing: 0.04em; }
+.mem-track { flex:1; height: 6px; background: rgba(255,255,255,0.07); border-radius: 3px; overflow: hidden; }
+.mem-fill { height: 100%; border-radius: 3px; background: rgba(255,149,0,0.7); }
+
+/* ══════════════════════════════════════════
+   NEWSLETTER — Apple's subscribe banner
+══════════════════════════════════════════ */
+.subscribe-band {
+  background: var(--gray-100);
+  border-top: 1px solid var(--gray-200);
+  padding: 80px 24px;
+  text-align: center;
+}
+.subscribe-inner { max-width: 560px; margin: 0 auto; }
+.subscribe-h { font-size: clamp(30px, 4vw, 48px); font-weight: 600; letter-spacing: -0.02em; color: var(--gray-800); margin-bottom: 12px; }
+.subscribe-sub { font-size: 17px; font-weight: 300; color: var(--gray-500); line-height: 1.55; margin-bottom: 32px; }
+.subscribe-form { display: flex; gap: 10px; max-width: 420px; margin: 0 auto 12px; }
+.subscribe-input {
+  flex: 1; padding: 13px 18px; border-radius: 980px;
+  border: 1px solid var(--gray-300); background: var(--white);
+  font-family: var(--font); font-size: 16px; color: var(--gray-800);
+  outline: none; transition: border-color 0.2s;
+}
+.subscribe-input:focus { border-color: var(--blue); }
+.subscribe-input::placeholder { color: var(--gray-400); }
+.subscribe-btn {
+  padding: 13px 24px; border-radius: 980px;
+  background: var(--blue); color: #fff;
+  font-family: var(--font); font-size: 16px; font-weight: 500;
+  border: none; cursor: pointer; transition: all 0.2s;
+  white-space: nowrap;
+}
+.subscribe-btn:hover { background: var(--blue-hover); transform: scale(1.02); }
+.subscribe-note { font-size: 12px; color: var(--gray-400); font-family: var(--font-mono); }
+
+/* ══════════════════════════════════════════
+   AUTHOR — minimal card
+══════════════════════════════════════════ */
+.author-band {
+  background: var(--white); padding: 80px 24px;
+  border-top: 1px solid var(--gray-200);
+}
+.author-inner {
+  max-width: var(--max); margin: 0 auto;
+  display: flex; align-items: center; gap: 40px;
+}
+.author-av-wrap {
+  width: 80px; height: 80px; border-radius: 50%; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--blue) 0%, #5AC8FA 100%);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 28px; font-weight: 700; color: #fff;
+}
+.author-info { flex: 1; }
+.author-name { font-size: 24px; font-weight: 600; color: var(--gray-800); letter-spacing: -0.01em; margin-bottom: 4px; }
+.author-role { font-size: 15px; color: var(--blue); font-family: var(--font-mono); margin-bottom: 10px; }
+.author-bio { font-size: 16px; font-weight: 300; color: var(--gray-500); line-height: 1.6; max-width: 480px; }
+.author-links { display: flex; gap: 12px; margin-top: 16px; }
+.author-link {
+  font-size: 14px; color: var(--blue); font-weight: 400;
+  display: flex; align-items: center; gap: 3px; transition: gap 0.2s;
+}
+.author-link:hover { gap: 6px; }
+
+/* ══════════════════════════════════════════
+   FOOTER — Apple's minimal footer
+══════════════════════════════════════════ */
+.footer {
+  background: var(--gray-100);
+  border-top: 1px solid var(--gray-200);
+}
+.footer-top {
+  max-width: var(--max-wide); margin: 0 auto;
+  padding: 48px 24px 36px;
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+}
+.footer-col-head {
+  font-size: 12px; font-weight: 600; color: var(--gray-800);
+  margin-bottom: 14px; letter-spacing: 0;
+}
+.footer-col a {
+  display: block; font-size: 13px; color: var(--gray-600);
+  padding: 4px 0; transition: color 0.15s;
+}
+.footer-col a:hover { color: var(--gray-800); }
+.footer-bottom {
+  max-width: var(--max-wide); margin: 0 auto;
+  padding: 16px 24px 24px;
+  border-top: 1px solid var(--gray-200);
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 16px; flex-wrap: wrap;
+}
+.footer-copy { font-size: 12px; color: var(--gray-500); }
+.footer-bottom-links { display: flex; gap: 16px; }
+.footer-bottom-links a { font-size: 12px; color: var(--gray-500); transition: color 0.15s; }
+.footer-bottom-links a:hover { color: var(--gray-800); }
+
+/* ══════════════════════════════════════════
+   RESPONSIVE
+══════════════════════════════════════════ */
+@media (max-width: 1000px) {
+  .what-inner { grid-template-columns: 1fr; }
+  .what-left { padding: 70px 0 40px; border-right: none; border-bottom: 1px solid var(--gray-200); }
+  .what-right { padding: 40px 0 70px; }
+  .ways-grid { grid-template-columns: 1fr 1fr; }
+  .article-grid { grid-template-columns: 1fr 1fr; }
+  .concept-row { grid-template-columns: 1fr; }
+  .concept-row.flip { direction: ltr; }
+  .concept-visual { min-height: 240px; }
+  .footer-top { grid-template-columns: 1fr 1fr; }
+  .author-inner { flex-direction: column; text-align: center; }
+  .author-links { justify-content: center; }
+}
+@media (max-width: 720px) {
+  .nav-links { display: none; }
+  .nav-hamburger { display: flex; }
+  .hero-h1 { font-size: 44px; }
+  .ways-grid { grid-template-columns: 1fr; }
+  .what-pillars { grid-template-columns: 1fr; }
+  .article-grid { grid-template-columns: 1fr; }
+  .feed-header { flex-direction: column; align-items: flex-start; gap: 16px; }
+  .subscribe-form { flex-direction: column; }
+  .footer-top { grid-template-columns: 1fr 1fr; gap: 24px; }
+  .footer-bottom { flex-direction: column; text-align: center; }
+  .card-featured-body { padding: 28px; }
+  .card-featured-meta { flex-wrap: wrap; gap: 12px; }
+  .card-read-btn { margin-left: 0; }
+}
+@media (max-width: 480px) {
+  .hero-h1 { font-size: 36px; letter-spacing: -0.025em; }
+  .section-h2 { font-size: 32px; }
+  .footer-top { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
 
-<!-- NAV -->
-<nav>
-  <a href="/" class="nav-logo">
-    <div class="logo-mark">
-      <svg viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path d="M2 7.5 L5 4.5 L8 7.5 L11 4.5 L13 6.5 M2 10.5 L5 7.5 L8 10.5 L11 7.5 L13 9.5" stroke="#0A0A0B" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
+<!-- ══════════════════════════════════════
+   NAV
+══════════════════════════════════════ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="/" class="nav-logo">agenticai<span>/</span>studio</a>
+    <ul class="nav-links">
+      <li><a href="#learn">What is Agentic AI</a></li>
+      <li><a href="#best-ways">How to Build</a></li>
+      <li><a href="#articles">Articles</a></li>
+      <li><a href="#series">Series</a></li>
+      <li><a href="#about">About</a></li>
+    </ul>
+    <a href="#subscribe" class="nav-cta">Subscribe ›</a>
+    <div class="nav-hamburger" onclick="document.querySelector('.nav-links').style.display='flex'">
+      <span></span><span></span><span></span>
     </div>
-    <span>agenticai<span class="logo-slash">/</span>studio</span>
-  </a>
-
-  <div class="nav-center">
-    <button class="nav-pill active" onclick="filterFeed('all',this)">All</button>
-    <button class="nav-pill" onclick="filterFeed('tutorial',this)">Tutorials</button>
-    <button class="nav-pill" onclick="filterFeed('breakdown',this)">Breakdowns</button>
-    <button class="nav-pill" onclick="filterFeed('build',this)">Builds</button>
-    <button class="nav-pill" onclick="filterFeed('opinion',this)">Opinion</button>
-  </div>
-
-  <div class="nav-right">
-    <a href="#subscribe" class="nav-subscribe">Subscribe →</a>
   </div>
 </nav>
 
-<!-- HERO -->
-<div class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-inner">
-    <div class="hero-eyebrow">The Agentic AI Studio</div>
-    <h1 class="hero-title">
-      Where agents are<br/>
-      <em>built</em>, broken,<br/>and shipped to <strong>production</strong>
+<!-- ══════════════════════════════════════
+   HERO
+══════════════════════════════════════ -->
+<section class="hero">
+  <div class="hero-content">
+    <span class="hero-eyebrow">The Agentic AI Studio</span>
+    <h1 class="hero-h1">
+      <span class="grad">The future of AI</span><br/>
+      is <span class="blue">agentic.</span>
     </h1>
-    <p class="hero-desc">
-      Deep tutorials, system breakdowns, and real builds on <b>Agentic AI</b> —
-      from multi-agent architectures to LLM pipelines to the messy reality of
-      deploying autonomous systems at enterprise scale.
+    <p class="hero-sub">
+      Deep tutorials, system breakdowns, and real builds on <strong>Agentic AI</strong> —
+      from multi-agent architectures to production deployments.
+      Written by a practitioner.
     </p>
-    <div class="hero-tags">
-      <span class="hero-tag">Multi-agent systems</span>
-      <span class="hero-tag">LangGraph</span>
-      <span class="hero-tag">RAG pipelines</span>
-      <span class="hero-tag">LLM evaluation</span>
-      <span class="hero-tag">Tool calling</span>
-      <span class="hero-tag">Agent memory</span>
-      <span class="hero-tag">CrewAI</span>
-      <span class="hero-tag">Autonomous agents</span>
-      <span class="hero-tag">Production AI</span>
+    <div class="hero-actions">
+      <a href="#articles" class="btn-primary">Start reading →</a>
+      <a href="#best-ways" class="btn-secondary">How to build agents</a>
     </div>
   </div>
-</div>
+  <div class="hero-scroll">
+    <span>Scroll</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
 
-<!-- LAYOUT -->
-<div class="layout">
-
-  <!-- FEED -->
-  <main class="feed">
-
-    <!-- FEATURED -->
-    <div class="post-featured fade-in">
-      <div class="featured-badge">Latest deep dive</div>
-      <div class="featured-title">
-        How I built a <em>self-correcting</em> agent that rewrites its own plan when it fails
+<!-- ══════════════════════════════════════
+   WHAT IS AGENTIC AI
+══════════════════════════════════════ -->
+<section id="learn">
+  <div class="what-band">
+    <div class="what-inner">
+      <div class="what-left reveal">
+        <div class="section-label">Foundation</div>
+        <h2 class="what-headline">What is<br/><em>Agentic AI?</em></h2>
+        <p class="what-body">
+          Agentic AI is the architecture shift where AI stops <strong>answering questions</strong>
+          and starts <strong>completing goals</strong>. An agent perceives its environment,
+          reasons about the best action, uses tools, and acts — in a continuous loop — until the objective is met.
+        </p>
+        <p class="what-body">
+          It's the difference between a search engine and a research assistant.
+          Between a calculator and a co-worker. The models haven't changed.
+          <strong>The architecture has.</strong>
+        </p>
+        <a href="#best-ways" class="what-link">Learn to build agents ›</a>
       </div>
-      <div class="featured-deck">
-        Most agents fail silently. This post walks through the architecture of a reflective agent loop — with a critic node, dynamic re-planning, and escape hatches for when the LLM hallucinates a tool call. Full code included.
-      </div>
-      <div class="featured-foot">
-        <div class="featured-meta">
-          <div class="featured-author">
-            <div class="author-av">N</div>
-            <span class="author-name">Nagesh CH · Jan 2025</span>
+      <div class="what-right reveal">
+        <div class="what-pillars">
+          <div class="pillar">
+            <div class="pillar-num">01</div>
+            <div class="pillar-title">Perceive & Reason</div>
+            <div class="pillar-desc">The agent reads context — documents, APIs, history — and uses an LLM to reason what to do next. Not just retrieve, but think.</div>
           </div>
-          <div class="featured-stats">
-            <span class="fstat">⏱ 18 min</span>
-            <span class="fstat">👁 4.2k views</span>
+          <div class="pillar">
+            <div class="pillar-num">02</div>
+            <div class="pillar-title">Use Tools</div>
+            <div class="pillar-desc">Agents call functions: search, query databases, write code. Tools transform language models from advisors into actors.</div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">03</div>
+            <div class="pillar-title">Loop & Plan</div>
+            <div class="pillar-desc">Unlike single prompts, agents run in a loop — plan, act, observe, re-plan. They handle tasks no single call can complete.</div>
+          </div>
+          <div class="pillar">
+            <div class="pillar-num">04</div>
+            <div class="pillar-title">Coordinate</div>
+            <div class="pillar-desc">Complex tasks split across specialist agents — planner, researcher, critic, executor — that pass state like a team.</div>
           </div>
         </div>
-        <a href="#" class="read-btn" onclick="return false">Read now →</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   BEST WAYS TO BUILD
+══════════════════════════════════════ -->
+<section class="ways-section" id="best-ways">
+  <div class="ways-header reveal">
+    <div class="section-label">Principles</div>
+    <h2 class="section-h2">Best ways to build<br/><em>Agentic AI</em></h2>
+    <p class="section-lead">Distilled from 11 years shipping production AI — not theory, not hype. What actually works when your agent meets real users.</p>
+  </div>
+  <div class="ways-grid reveal">
+    <div class="way-card">
+      <div class="way-num">01</div>
+      <span class="way-icon">🕸️</span>
+      <div class="way-title">Start with a graph, not a chain</div>
+      <div class="way-desc">Linear chains break the moment a step fails or needs to branch. Model your agent as a directed graph — nodes are actions, edges are conditions. Structure matters more than framework.</div>
+      <div class="way-tags"><span class="way-tag">LangGraph</span><span class="way-tag">Architecture</span></div>
+    </div>
+    <div class="way-card">
+      <div class="way-num">02</div>
+      <span class="way-icon">🛡️</span>
+      <div class="way-title">Design for failure, not the happy path</div>
+      <div class="way-desc">Agents fail in ways chains never do: tool timeouts, hallucinated calls, infinite loops, context overflow. Build a critic node. Add escape hatches. Plan for the 2am incident.</div>
+      <div class="way-tags"><span class="way-tag">Reliability</span><span class="way-tag">Error handling</span></div>
+    </div>
+    <div class="way-card">
+      <div class="way-num">03</div>
+      <span class="way-icon">🔧</span>
+      <div class="way-title">Keep tools small, typed, idempotent</div>
+      <div class="way-desc">An agent's quality ceiling is the quality of its tools. Each tool should do one thing, return structured output, and be safe to call twice. Name them like functions — "search_web" beats "web".</div>
+      <div class="way-tags"><span class="way-tag">Tool design</span><span class="way-tag">Function calling</span></div>
+    </div>
+    <div class="way-card">
+      <div class="way-num">04</div>
+      <span class="way-icon">🧠</span>
+      <div class="way-title">Use RAG for knowledge, not memory</div>
+      <div class="way-desc">RAG retrieves facts. Memory retains context. Conflating them breaks both. Use a vector store for domain knowledge, a structured store for episodic and working memory — separately.</div>
+      <div class="way-tags"><span class="way-tag">RAG</span><span class="way-tag">Memory</span><span class="way-tag">Vector DB</span></div>
+    </div>
+    <div class="way-card">
+      <div class="way-num">05</div>
+      <span class="way-icon">📊</span>
+      <div class="way-title">Evaluate outputs before users see them</div>
+      <div class="way-desc">Don't eyeball evals. Run an LLM-as-judge in CI on every build. Track faithfulness, relevance, and tool call accuracy. A regression in eval score is the first sign something broke.</div>
+      <div class="way-tags"><span class="way-tag">Evaluation</span><span class="way-tag">LLM-as-judge</span><span class="way-tag">CI/CD</span></div>
+    </div>
+    <div class="way-card">
+      <div class="way-num">06</div>
+      <span class="way-icon">👤</span>
+      <div class="way-title">Human-in-the-loop before irreversible actions</div>
+      <div class="way-desc">Autonomous doesn't mean unsupervised forever. For irreversible actions — sending emails, modifying databases — build in an approval interrupt. Trust is earned incrementally.</div>
+      <div class="way-tags"><span class="way-tag">Safety</span><span class="way-tag">HITL</span><span class="way-tag">LangGraph</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   ARTICLES FEED
+══════════════════════════════════════ -->
+<section class="feed-section" id="articles">
+
+  <!-- Header -->
+  <div class="feed-header reveal">
+    <div class="feed-header-left">
+      <div class="section-label">Content</div>
+      <h2 class="section-h2" style="margin-bottom:0">Latest articles</h2>
+    </div>
+    <a href="#" class="feed-all">Browse all articles ›</a>
+  </div>
+
+  <!-- Filter pills -->
+  <div class="feed-pills reveal">
+    <button class="feed-pill active" onclick="filterFeed('all',this)">All</button>
+    <button class="feed-pill" onclick="filterFeed('tutorial',this)">Tutorials</button>
+    <button class="feed-pill" onclick="filterFeed('breakdown',this)">Breakdowns</button>
+    <button class="feed-pill" onclick="filterFeed('build',this)">Builds</button>
+    <button class="feed-pill" onclick="filterFeed('opinion',this)">Opinion</button>
+  </div>
+
+  <!-- Featured -->
+  <div class="card-featured reveal" id="featured-card">
+    <div class="card-featured-body">
+      <span class="card-badge badge-featured">★ Latest Deep Dive</span>
+      <div class="card-featured-title">How I built a <em>self-correcting</em> agent that rewrites its own plan when it fails</div>
+      <div class="card-featured-desc">Most agents fail silently. This post walks through a reflective agent loop — critic node, dynamic re-planning, and escape hatches for when the LLM hallucinates a tool call. Full code included.</div>
+      <div class="card-featured-meta">
+        <div class="card-author">
+          <div class="card-av">N</div>
+          <span class="card-author-name">Nagesh CH · Jan 2025</span>
+        </div>
+        <span class="card-stat">⏱ 18 min</span>
+        <span class="card-stat">👁 4.2k views</span>
+        <a href="#" class="card-read-btn" onclick="return false">Read article ›</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Article grid -->
+  <div class="article-grid" id="articleGrid">
+
+    <div class="article-card reveal" data-type="tutorial">
+      <div class="article-card-img"><div class="article-card-img-bg img-blue"></div></div>
+      <div class="article-card-body">
+        <div class="article-tag-row"><span class="card-badge badge-tutorial">Tutorial</span><span class="article-date">Dec 2024</span></div>
+        <div class="article-title">Building a RAG pipeline that <em>actually works</em> in production</div>
+        <div class="article-desc">Chunking, embeddings, reranking, and the 12 ways your retrieval silently fails under real load.</div>
+        <div class="article-foot"><span class="article-read-time">14 min read</span><span class="article-arrow">→</span></div>
       </div>
     </div>
 
-    <!-- SERIES -->
-    <div class="series-strip fade-in">
-      <div class="series-label">📚 Series — LangGraph Masterclass · 6 parts</div>
+    <div class="article-card reveal" data-type="breakdown">
+      <div class="article-card-img"><div class="article-card-img-bg img-violet"></div></div>
+      <div class="article-card-body">
+        <div class="article-tag-row"><span class="card-badge badge-breakdown">Breakdown</span><span class="article-date">Dec 2024</span></div>
+        <div class="article-title">I dissected OpenAI's <em>Swarm</em> — here's what's actually happening</div>
+        <div class="article-desc">The handoff pattern, the context variable trick, and why it's both clever and limited.</div>
+        <div class="article-foot"><span class="article-read-time">11 min read</span><span class="article-arrow">→</span></div>
+      </div>
+    </div>
+
+    <div class="article-card reveal" data-type="build">
+      <div class="article-card-img"><div class="article-card-img-bg img-teal"></div></div>
+      <div class="article-card-body">
+        <div class="article-tag-row"><span class="card-badge badge-build">Build</span><span class="article-date">Nov 2024</span></div>
+        <div class="article-title">Autonomous research agent with LangGraph, Tavily, and Claude</div>
+        <div class="article-desc">Full build log: planner, search tool, extractor, synthesizer. Every node, every edge, full repo.</div>
+        <div class="article-foot"><span class="article-read-time">22 min read</span><span class="article-arrow">→</span></div>
+      </div>
+    </div>
+
+    <div class="article-card reveal" data-type="opinion">
+      <div class="article-card-img"><div class="article-card-img-bg img-amber"></div></div>
+      <div class="article-card-body">
+        <div class="article-tag-row"><span class="card-badge badge-opinion">Opinion</span><span class="article-date">Nov 2024</span></div>
+        <div class="article-title">LangGraph vs CrewAI — an honest comparison after shipping both</div>
+        <div class="article-desc">Not a framework war. A real comparison from someone who's debugged both at 2am in production.</div>
+        <div class="article-foot"><span class="article-read-time">7 min read</span><span class="article-arrow">→</span></div>
+      </div>
+    </div>
+
+    <div class="article-card reveal" data-type="tutorial">
+      <div class="article-card-img"><div class="article-card-img-bg img-gray"></div></div>
+      <div class="article-card-body">
+        <div class="article-tag-row"><span class="card-badge badge-tutorial">Tutorial</span><span class="article-date">Oct 2024</span></div>
+        <div class="article-title">Agent memory that <em>actually persists</em></div>
+        <div class="article-desc">Semantic, episodic, procedural — the three memory types and how to implement each.</div>
+        <div class="article-foot"><span class="article-read-time">16 min read</span><span class="article-arrow">→</span></div>
+      </div>
+    </div>
+
+    <div class="article-card reveal" data-type="breakdown">
+      <div class="article-card-img"><div class="article-card-img-bg img-green"></div></div>
+      <div class="article-card-body">
+        <div class="article-tag-row"><span class="card-badge badge-breakdown">Breakdown</span><span class="article-date">Oct 2024</span></div>
+        <div class="article-title">ARC-AGI-3 — why current agents keep failing the benchmark</div>
+        <div class="article-desc">Fluid intelligence, not data memorization. What the benchmark reveals about today's agents.</div>
+        <div class="article-foot"><span class="article-read-time">9 min read</span><span class="article-arrow">→</span></div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+<!-- ══════════════════════════════════════
+   SERIES
+══════════════════════════════════════ -->
+<section class="series-section" id="series">
+  <div class="series-inner">
+    <div class="series-header-row reveal">
       <div>
-        <div class="series-item">
-          <span class="series-num">01</span>
-          <span class="series-item-title">Why LangGraph beats LangChain for complex agents</span>
-          <span class="series-check done"></span>
-        </div>
-        <div class="series-item">
-          <span class="series-num">02</span>
-          <span class="series-item-title">Stateful graphs — checkpoints, memory, and persistence</span>
-          <span class="series-check done"></span>
-        </div>
-        <div class="series-item">
-          <span class="series-num">03</span>
-          <span class="series-item-title">Conditional edges and dynamic routing</span>
-          <span class="series-check done"></span>
-        </div>
-        <div class="series-item">
-          <span class="series-num">04</span>
-          <span class="series-item-title">Human-in-the-loop interrupts and approvals</span>
-          <span class="series-check"></span>
-        </div>
-        <div class="series-item">
-          <span class="series-num">05</span>
-          <span class="series-item-title">Multi-agent supervisor patterns</span>
-          <span class="series-check"></span>
-        </div>
-        <div class="series-item">
-          <span class="series-num">06</span>
-          <span class="series-item-title">Deploying LangGraph agents to production on Azure</span>
-          <span class="series-check"></span>
+        <div class="section-label">Series</div>
+        <h2 class="section-h2" style="margin-bottom:0;font-size:clamp(28px,3.5vw,44px)">LangGraph Masterclass</h2>
+      </div>
+      <a href="#" class="feed-all">See all series ›</a>
+    </div>
+    <div class="series-track reveal">
+
+      <div class="series-card">
+        <div class="series-ep">Episode 01</div>
+        <div class="series-title">Why LangGraph beats LangChain for complex agents</div>
+        <div class="series-desc">The graph mental model and why it unlocks what chains can't.</div>
+        <div class="series-meta">
+          <div class="series-status"><span class="series-dot done"></span>Published · 12 min</div>
+          <span class="series-card-arrow">›</span>
         </div>
       </div>
-    </div>
 
-    <!-- FILTER BAR -->
-    <div class="filter-bar">
-      <button class="filter-btn on" onclick="filterFeed('all',this)">All posts</button>
-      <button class="filter-btn" onclick="filterFeed('tutorial',this)">Tutorials</button>
-      <button class="filter-btn" onclick="filterFeed('breakdown',this)">Breakdowns</button>
-      <button class="filter-btn" onclick="filterFeed('build',this)">Builds</button>
-      <button class="filter-btn" onclick="filterFeed('opinion',this)">Opinion</button>
-    </div>
-
-    <!-- POSTS -->
-    <div id="postList">
-
-      <article class="post-card fade-in" data-type="tutorial">
-        <div class="post-card-top">
-          <div class="post-meta-row">
-            <span class="post-type type-tutorial">Tutorial</span>
-            <span class="post-date">Dec 2024</span>
-            <span class="post-read">· 14 min</span>
-          </div>
-        </div>
-        <div class="post-title">Building a RAG pipeline that <em>actually works</em> in production — not just demos</div>
-        <div class="post-deck">Chunking strategies, embedding choices, reranking, and the 12 ways your retrieval silently fails under real load. Every lesson from shipping RAG to enterprise.</div>
-        <div class="post-foot">
-          <div class="post-tags">
-            <span class="post-tag">RAG</span>
-            <span class="post-tag">LangChain</span>
-            <span class="post-tag">Vector DB</span>
-            <span class="post-tag">Production</span>
-          </div>
-          <span class="post-arrow">→</span>
-        </div>
-      </article>
-
-      <article class="post-card fade-in" data-type="breakdown">
-        <div class="post-card-top">
-          <div class="post-meta-row">
-            <span class="post-type type-breakdown">Breakdown</span>
-            <span class="post-date">Dec 2024</span>
-            <span class="post-read">· 11 min</span>
-          </div>
-        </div>
-        <div class="post-title">I dissected OpenAI's <em>Swarm</em> framework — here's what's actually happening under the hood</div>
-        <div class="post-deck">Swarm looked like magic when it dropped. Three hours of reading source code later, here's the full breakdown — the handoff pattern, the context variable trick, and why it's both clever and limited.</div>
-        <div class="post-foot">
-          <div class="post-tags">
-            <span class="post-tag">OpenAI</span>
-            <span class="post-tag">Swarm</span>
-            <span class="post-tag">Multi-agent</span>
-          </div>
-          <span class="post-arrow">→</span>
-        </div>
-      </article>
-
-      <article class="post-card fade-in" data-type="build">
-        <div class="post-card-top">
-          <div class="post-meta-row">
-            <span class="post-type type-build">Build</span>
-            <span class="post-date">Nov 2024</span>
-            <span class="post-read">· 22 min</span>
-          </div>
-        </div>
-        <div class="post-title">Building an autonomous research agent with LangGraph, Tavily, and Claude — start to finish</div>
-        <div class="post-deck">Full build log: planning agent, web search tool, structured extraction, synthesis node, and a report generator. Every node, every edge, full code repo. This is the post I wish existed when I started.</div>
-        <div class="post-foot">
-          <div class="post-tags">
-            <span class="post-tag">LangGraph</span>
-            <span class="post-tag">Claude API</span>
-            <span class="post-tag">Tavily</span>
-            <span class="post-tag">Full code</span>
-          </div>
-          <span class="post-arrow">→</span>
-        </div>
-      </article>
-
-      <article class="post-card fade-in" data-type="opinion">
-        <div class="post-card-top">
-          <div class="post-meta-row">
-            <span class="post-type type-opinion">Opinion</span>
-            <span class="post-date">Nov 2024</span>
-            <span class="post-read">· 7 min</span>
-          </div>
-        </div>
-        <div class="post-title">LangGraph vs CrewAI in 2025 — an honest comparison after shipping both to production</div>
-        <div class="post-deck">Not a framework war. A real comparison from someone who's debugged both at 2am in production. Different tools for different problems — here's how to actually choose.</div>
-        <div class="post-foot">
-          <div class="post-tags">
-            <span class="post-tag">LangGraph</span>
-            <span class="post-tag">CrewAI</span>
-            <span class="post-tag">Architecture</span>
-          </div>
-          <span class="post-arrow">→</span>
-        </div>
-      </article>
-
-      <article class="post-card fade-in" data-type="tutorial">
-        <div class="post-card-top">
-          <div class="post-meta-row">
-            <span class="post-type type-tutorial">Tutorial</span>
-            <span class="post-date">Oct 2024</span>
-            <span class="post-read">· 16 min</span>
-          </div>
-        </div>
-        <div class="post-title">Agent memory that <em>actually persists</em> — a practical guide to long-term memory patterns</div>
-        <div class="post-deck">Semantic memory, episodic memory, procedural memory — the three memory types your agent needs, and how to implement each using vector stores, SQL, and simple key-value patterns.</div>
-        <div class="post-foot">
-          <div class="post-tags">
-            <span class="post-tag">Memory</span>
-            <span class="post-tag">Vector DB</span>
-            <span class="post-tag">State management</span>
-          </div>
-          <span class="post-arrow">→</span>
-        </div>
-      </article>
-
-      <article class="post-card fade-in" data-type="breakdown">
-        <div class="post-card-top">
-          <div class="post-meta-row">
-            <span class="post-type type-breakdown">Breakdown</span>
-            <span class="post-date">Oct 2024</span>
-            <span class="post-read">· 9 min</span>
-          </div>
-        </div>
-        <div class="post-title">The ARC-AGI-3 benchmark — what it tests and why current agents keep failing it</div>
-        <div class="post-deck">New reasoning benchmark, same old problem: fluid intelligence. Breaking down what it measures, how frontier models score, and what it reveals about the ceiling of current agentic approaches.</div>
-        <div class="post-foot">
-          <div class="post-tags">
-            <span class="post-tag">Benchmarks</span>
-            <span class="post-tag">ARC-AGI</span>
-            <span class="post-tag">Reasoning</span>
-          </div>
-          <span class="post-arrow">→</span>
-        </div>
-      </article>
-
-      <article class="post-card fade-in" data-type="build">
-        <div class="post-card-top">
-          <div class="post-meta-row">
-            <span class="post-type type-build">Build</span>
-            <span class="post-date">Sep 2024</span>
-            <span class="post-read">· 19 min</span>
-          </div>
-        </div>
-        <div class="post-title">Tool calling patterns that scale — how to design agent tools without shooting yourself in the foot</div>
-        <div class="post-deck">Naming conventions, error handling contracts, idempotency, streaming vs. blocking — the field guide to tool design that every agentic engineer needs. With examples from a real production system.</div>
-        <div class="post-foot">
-          <div class="post-tags">
-            <span class="post-tag">Tool use</span>
-            <span class="post-tag">Architecture</span>
-            <span class="post-tag">Best practices</span>
-          </div>
-          <span class="post-arrow">→</span>
-        </div>
-      </article>
-
-    </div>
-
-    <div class="load-more">
-      <button class="load-btn" onclick="this.textContent='Loading…'">Load more posts</button>
-    </div>
-
-  </main>
-
-  <!-- SIDEBAR -->
-  <aside class="sidebar">
-
-    <div id="subscribe">
-      <div class="newsletter-box">
-        <div class="nl-title">Stay ahead of the agents</div>
-        <div class="nl-desc">Deep dives, builds, and framework breakdowns — every 2 weeks. No fluff, no hype.</div>
-        <form onsubmit="handleNL(event)">
-          <input type="email" class="nl-input" placeholder="you@company.com" required id="nlEmail"/>
-          <button type="submit" class="nl-btn" id="nlBtn">Subscribe for free →</button>
-        </form>
-        <div class="nl-note">500+ practitioners subscribed · No spam ever</div>
-      </div>
-    </div>
-
-    <div>
-      <div class="sidebar-label">Author</div>
-      <div class="author-card">
-        <div class="author-av-lg">N</div>
-        <div>
-          <div class="author-card-name">Nagesh CH</div>
-          <div class="author-card-role">Senior AI/ML Architect · 11yr</div>
-          <div class="author-card-bio">Building agentic AI in production. Writing about what actually works.</div>
-          <div class="author-socials">
-            <a href="https://linkedin.com/in/nageshch" target="_blank" class="author-social">LinkedIn</a>
-            <a href="https://nageshch.com" target="_blank" class="author-social">Portfolio</a>
-            <a href="https://github.com/nageshch" target="_blank" class="author-social">GitHub</a>
-          </div>
+      <div class="series-card">
+        <div class="series-ep">Episode 02</div>
+        <div class="series-title">Stateful graphs — checkpoints, memory, persistence</div>
+        <div class="series-desc">How to make your agent remember across runs without a database.</div>
+        <div class="series-meta">
+          <div class="series-status"><span class="series-dot done"></span>Published · 15 min</div>
+          <span class="series-card-arrow">›</span>
         </div>
       </div>
-    </div>
 
-    <div>
-      <div class="sidebar-label">Topics</div>
-      <div class="topic-grid">
-        <span class="topic-chip hot">Multi-agent</span>
-        <span class="topic-chip hot">LangGraph</span>
-        <span class="topic-chip">RAG</span>
-        <span class="topic-chip">CrewAI</span>
-        <span class="topic-chip">Tool calling</span>
-        <span class="topic-chip">Memory</span>
-        <span class="topic-chip">Evaluation</span>
-        <span class="topic-chip">Prompt eng.</span>
-        <span class="topic-chip">Fine-tuning</span>
-        <span class="topic-chip">Observability</span>
-        <span class="topic-chip">Production</span>
-        <span class="topic-chip">Azure AI</span>
-        <span class="topic-chip">Claude API</span>
-        <span class="topic-chip">Benchmarks</span>
-      </div>
-    </div>
-
-    <div>
-      <div class="sidebar-label">Trending this month</div>
-      <div>
-        <div class="trending-item">
-          <span class="trend-num">01</span>
-          <div>
-            <div class="trend-title">Self-correcting agent — critic + re-planner pattern</div>
-            <div class="trend-meta">4.2k views · 18 min</div>
-          </div>
-        </div>
-        <div class="trending-item">
-          <span class="trend-num">02</span>
-          <div>
-            <div class="trend-title">LangGraph vs CrewAI — honest production comparison</div>
-            <div class="trend-meta">3.1k views · 7 min</div>
-          </div>
-        </div>
-        <div class="trending-item">
-          <span class="trend-num">03</span>
-          <div>
-            <div class="trend-title">RAG that works in production, not just demos</div>
-            <div class="trend-meta">2.8k views · 14 min</div>
-          </div>
-        </div>
-        <div class="trending-item">
-          <span class="trend-num">04</span>
-          <div>
-            <div class="trend-title">Autonomous research agent — full build log</div>
-            <div class="trend-meta">2.1k views · 22 min</div>
-          </div>
+      <div class="series-card">
+        <div class="series-ep">Episode 03</div>
+        <div class="series-title">Conditional edges and dynamic routing</div>
+        <div class="series-desc">Building decision logic that routes between nodes based on agent output.</div>
+        <div class="series-meta">
+          <div class="series-status"><span class="series-dot done"></span>Published · 10 min</div>
+          <span class="series-card-arrow">›</span>
         </div>
       </div>
+
+      <div class="series-card">
+        <div class="series-ep">Episode 04</div>
+        <div class="series-title">Human-in-the-loop interrupts and approvals</div>
+        <div class="series-desc">Pausing agent execution for human review before irreversible actions.</div>
+        <div class="series-meta">
+          <div class="series-status"><span class="series-dot pending"></span>Coming soon</div>
+          <span class="series-card-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="series-card">
+        <div class="series-ep">Episode 05</div>
+        <div class="series-title">Multi-agent supervisor patterns</div>
+        <div class="series-desc">Orchestrating specialist agents from a central planning supervisor.</div>
+        <div class="series-meta">
+          <div class="series-status"><span class="series-dot pending"></span>Coming soon</div>
+          <span class="series-card-arrow">›</span>
+        </div>
+      </div>
+
+      <div class="series-card">
+        <div class="series-ep">Episode 06</div>
+        <div class="series-title">Deploying LangGraph agents to production on Azure</div>
+        <div class="series-desc">From local dev to enterprise-grade deployment — architecture patterns that hold.</div>
+        <div class="series-meta">
+          <div class="series-status"><span class="series-dot pending"></span>Coming soon</div>
+          <span class="series-card-arrow">›</span>
+        </div>
+      </div>
+
     </div>
-
-  </aside>
-
-</div>
-
-<!-- FOOTER -->
-<footer>
-  <div>
-    <span class="footer-brand-name">agenticai-studio.com</span>
-    <p class="footer-brand-desc">Deep technical content on building Agentic AI — from architecture to production. Written by a practitioner, for practitioners.</p>
   </div>
-  <div class="footer-col">
-    <h4>Content</h4>
-    <a href="#">Tutorials</a>
-    <a href="#">Breakdowns</a>
-    <a href="#">Builds</a>
-    <a href="#">Opinion</a>
-    <a href="#">Series</a>
+</section>
+
+<!-- ══════════════════════════════════════
+   CORE CONCEPTS
+══════════════════════════════════════ -->
+<section class="concepts-section">
+  <div class="concepts-inner">
+    <div class="centered reveal" style="margin-bottom:56px">
+      <div class="section-label">Core concepts</div>
+      <h2 class="section-h2">Essential knowledge for every<br/><em>agentic engineer</em></h2>
+    </div>
+
+    <!-- ReAct -->
+    <div class="concept-row reveal">
+      <div class="concept-visual blue">
+        <div class="vis-react">
+          <div style="display:flex;align-items:center;gap:0;position:relative">
+            <div class="react-node reason" style="position:relative"><span>💭</span><span class="react-label">Reason</span></div>
+            <div class="react-arrow"></div>
+            <div class="react-node act" style="position:relative"><span>⚡</span><span class="react-label">Act</span></div>
+            <div class="react-arrow"></div>
+            <div class="react-node observe" style="position:relative"><span>👁</span><span class="react-label">Observe</span></div>
+          </div>
+        </div>
+      </div>
+      <div class="concept-text-panel">
+        <div class="concept-num">Concept 01</div>
+        <div class="concept-title">The <em>ReAct</em> loop — the heartbeat of every agent</div>
+        <div class="concept-body">The foundational pattern behind every modern agent. The LLM reasons what to do, calls a tool (acts), receives an observation, then reasons again. This loop is prerequisite to debugging any agent that behaves unexpectedly.</div>
+        <a href="#" class="concept-link" onclick="return false">Read the deep dive ›</a>
+      </div>
+    </div>
+
+    <!-- Tool design -->
+    <div class="concept-row flip reveal">
+      <div class="concept-visual dark">
+        <div class="vis-tools">
+          <div class="tool-row"><span class="tool-icon">🔍</span><span class="tool-name">search_web(query)</span><span class="tool-status"></span></div>
+          <div class="tool-row"><span class="tool-icon">📄</span><span class="tool-name">read_document(id)</span><span class="tool-status"></span></div>
+          <div class="tool-row"><span class="tool-icon">🐍</span><span class="tool-name">run_python(code)</span><span class="tool-status"></span></div>
+          <div class="tool-row"><span class="tool-icon">📧</span><span class="tool-name">send_email(to, body)</span><span class="tool-status"></span></div>
+          <div class="tool-row"><span class="tool-icon">🗄️</span><span class="tool-name">query_db(sql)</span><span class="tool-status"></span></div>
+        </div>
+      </div>
+      <div class="concept-text-panel">
+        <div class="concept-num">Concept 02</div>
+        <div class="concept-title">Tool design is an <em>art</em></div>
+        <div class="concept-body">Your agent's quality ceiling is the quality of its tools. Small, typed, idempotent functions with clear names. "search_web" beats "web". Structured outputs beat free text. The LLM picks tools by name — naming is API design.</div>
+        <a href="#" class="concept-link" onclick="return false">Read the guide ›</a>
+      </div>
+    </div>
+
+    <!-- Memory -->
+    <div class="concept-row reveal">
+      <div class="concept-visual warm">
+        <div class="vis-memory">
+          <div class="mem-bar"><span class="mem-label">Semantic</span><div class="mem-track"><div class="mem-fill" style="width:85%;background:rgba(90,200,250,0.7)"></div></div></div>
+          <div class="mem-bar"><span class="mem-label">Episodic</span><div class="mem-track"><div class="mem-fill" style="width:62%;background:rgba(52,199,89,0.7)"></div></div></div>
+          <div class="mem-bar"><span class="mem-label">Working</span><div class="mem-track"><div class="mem-fill" style="width:40%;background:rgba(255,149,0,0.7)"></div></div></div>
+          <div class="mem-bar"><span class="mem-label">Procedural</span><div class="mem-track"><div class="mem-fill" style="width:28%;background:rgba(167,139,250,0.7)"></div></div></div>
+        </div>
+      </div>
+      <div class="concept-text-panel">
+        <div class="concept-num">Concept 03</div>
+        <div class="concept-title">The four types of <em>agent memory</em></div>
+        <div class="concept-body">Semantic memory stores facts. Episodic memory stores experiences. Working memory holds the current context. Procedural memory encodes skills. Each needs a different store — vector DB, SQL, in-context, and code respectively.</div>
+        <a href="#" class="concept-link" onclick="return false">Read the tutorial ›</a>
+      </div>
+    </div>
+
   </div>
-  <div class="footer-col">
-    <h4>Nagesh CH</h4>
-    <a href="https://nageshch.com" target="_blank">Portfolio →</a>
-    <a href="https://linkedin.com/in/nageshch" target="_blank">LinkedIn →</a>
-    <a href="https://github.com/nageshch" target="_blank">GitHub →</a>
-    <a href="mailto:hello@agenticai-studio.com">Contact</a>
+</section>
+
+<!-- ══════════════════════════════════════
+   SUBSCRIBE
+══════════════════════════════════════ -->
+<section class="subscribe-band" id="subscribe">
+  <div class="subscribe-inner reveal">
+    <h2 class="subscribe-h">Stay ahead of the agents.</h2>
+    <p class="subscribe-sub">Deep tutorials, framework breakdowns, and real builds — every two weeks. Written by a practitioner, for practitioners.</p>
+    <form class="subscribe-form" onsubmit="handleSub(event)">
+      <input type="email" class="subscribe-input" placeholder="Your email address" required id="subEmail"/>
+      <button type="submit" class="subscribe-btn" id="subBtn">Subscribe</button>
+    </form>
+    <p class="subscribe-note">500+ practitioners · No spam · Unsubscribe anytime</p>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   AUTHOR
+══════════════════════════════════════ -->
+<section class="author-band" id="about">
+  <div class="author-inner reveal">
+    <div class="author-av-wrap">N</div>
+    <div class="author-info">
+      <div class="author-name">Nagesh CH</div>
+      <div class="author-role">Senior AI/ML Architect · 11 years in production AI</div>
+      <div class="author-bio">Building Agentic AI systems at enterprise scale since before "agentic" was a buzzword. I write about what actually works — and what quietly fails — when you ship autonomous agents to production.</div>
+      <div class="author-links">
+        <a href="https://nageshch.com" target="_blank" class="author-link">Portfolio ›</a>
+        <a href="https://linkedin.com/in/nageshch" target="_blank" class="author-link">LinkedIn ›</a>
+        <a href="https://github.com/nageshch" target="_blank" class="author-link">GitHub ›</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════
+   FOOTER
+══════════════════════════════════════ -->
+<footer class="footer">
+  <div class="footer-top">
+    <div class="footer-col">
+      <div class="footer-col-head">Agenticai Studio</div>
+      <a href="#">About</a>
+      <a href="#">Newsletter</a>
+      <a href="mailto:hello@agenticai-studio.com">Contact</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">Content</div>
+      <a href="#">Tutorials</a>
+      <a href="#">Breakdowns</a>
+      <a href="#">Builds</a>
+      <a href="#">Opinion</a>
+      <a href="#">Series</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">Topics</div>
+      <a href="#">Multi-agent systems</a>
+      <a href="#">LangGraph</a>
+      <a href="#">RAG pipelines</a>
+      <a href="#">Agent memory</a>
+      <a href="#">LLM evaluation</a>
+    </div>
+    <div class="footer-col">
+      <div class="footer-col-head">Nagesh CH</div>
+      <a href="https://nageshch.com" target="_blank">Portfolio</a>
+      <a href="https://linkedin.com/in/nageshch" target="_blank">LinkedIn</a>
+      <a href="https://github.com/nageshch" target="_blank">GitHub</a>
+    </div>
   </div>
   <div class="footer-bottom">
-    <span>© 2025 Nagesh CH — agenticai-studio.com</span>
-    <span>Built in public · Shipped to production</span>
+    <span class="footer-copy">Copyright © 2025 Nagesh CH. All rights reserved.</span>
+    <div class="footer-bottom-links">
+      <a href="#">Privacy Policy</a>
+      <a href="#">Terms of Use</a>
+    </div>
   </div>
 </footer>
 
+<!-- ══════════════════════════════════════
+   JS
+══════════════════════════════════════ -->
 <script>
-const io = new IntersectionObserver((entries) => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('up'), i * 55);
-      io.unobserve(e.target);
+// Scroll-triggered reveals
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach((entry, i) => {
+    if (entry.isIntersecting) {
+      setTimeout(() => entry.target.classList.add('visible'), i * 80);
+      observer.unobserve(entry.target);
     }
   });
-}, { threshold: 0.08 });
-document.querySelectorAll('.fade-in').forEach(el => io.observe(el));
+}, { threshold: 0.07 });
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+// Nav scroll shadow
+window.addEventListener('scroll', () => {
+  document.querySelector('.nav').style.borderBottomColor =
+    window.scrollY > 10 ? 'rgba(0,0,0,0.12)' : 'rgba(0,0,0,0.08)';
+}, { passive: true });
+
+// Filter
 function filterFeed(type, btn) {
-  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('on'));
-  document.querySelectorAll('.nav-pill').forEach(b => b.classList.remove('active'));
-  if (btn) { btn.classList.add('on'); btn.classList.add('active'); }
-  document.querySelectorAll('.post-card').forEach(card => {
-    card.style.display = (type === 'all' || card.dataset.type === type) ? '' : 'none';
+  document.querySelectorAll('.feed-pill').forEach(b => b.classList.remove('active'));
+  if (btn) btn.classList.add('active');
+  const featured = document.getElementById('featured-card');
+  document.querySelectorAll('.article-card').forEach(card => {
+    const match = type === 'all' || card.dataset.type === type;
+    card.style.display = match ? '' : 'none';
   });
+  featured.style.display = (type === 'all' || type === 'breakdown') ? '' : 'none';
 }
 
-function handleNL(e) {
+// Subscribe
+function handleSub(e) {
   e.preventDefault();
-  const btn = document.getElementById('nlBtn');
-  btn.textContent = "✓ You're in!";
-  btn.style.background = 'var(--green)';
-  document.getElementById('nlEmail').value = '';
-  setTimeout(() => { btn.textContent = 'Subscribe for free →'; btn.style.background = ''; }, 4000);
+  const btn = document.getElementById('subBtn');
+  btn.textContent = '✓ Subscribed';
+  btn.style.background = '#34C759';
+  document.getElementById('subEmail').value = '';
+  setTimeout(() => { btn.textContent = 'Subscribe'; btn.style.background = ''; }, 4000);
 }
 </script>
+
 </body>
 </html>
